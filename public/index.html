@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+   <!--  <style>
+    /*      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }*/
+    
+    #mess {
+        display: none;
+    }
+    #id{
+      display: none;
+    }
+    </style> -->
+    <link rel="stylesheet" href="./stylesheets/style.css">
+</head>
+
+<body>
+    
+<!-- enter username -->
+    <div id="left-panel">
+        
+    </div>
+    <div id="right-panel">
+        <div id="username">
+            <form id="fuser">
+                <input type="text" id="iuser" placeholder="user_id">
+                <input type="text" id="uuser" placeholder="receiver_id">
+                <input type="submit">
+            </form>
+        </div>
+
+
+        <div id="userschat">
+        </div>
+        
+        <div id="mess">
+        <!-- users connected -->
+            <ul id="nuser">
+
+            </ul>
+        <!-- messages show -->
+            <div id="amess">
+            </div>
+        <!-- message form -->
+            <form id="fmess">
+                <input id="imessage" placeholder="message" type="text" />
+                <button>Send</button>
+            </form>
+        </div>    
+    </div>
+    
+    <script src="http://localhost:4000/socket.io/socket.io.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script>
+    var socket = io.connect('http://localhost:4000');
+    var fusername = $('#fuser');
+    var fmessage = $('#fmess');
+    var user = $('#iuser');
+    var mess = $('#imessage');
+    var chat = $('#mess');
+    var username = $('#username');
+    var receiver = $('#uuser');
+
+    fusername.submit(function(e) {
+        e.preventDefault();
+        socket.emit('new user', user.val(), receiver.val(), function(data) {
+            // if (data) {
+                username.hide();
+                chat.show();
+            // } else {
+            //     console.log("some error");
+            // }
+        });
+        user.val('');
+    });
+
+    fmessage.submit(function(e) {
+        e.preventDefault();
+        console.log(receiver.val());
+        socket.emit('chat message', mess.val());
+        mess.val('');
+        return false
+    });
+    socket.on('username', function(data, callback) {
+        var users = '';
+        // for (var i = 0; i < data.length; i++) {
+            users += '<li>'+data+ '</li>';
+        // }
+        $('#nuser').append(users);
+        // $('#userchat').append("users");
+    });
+
+
+    socket.on('message', function(data) {
+        $('#amess').append("<span class=\"user\">"
+            +data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>");
+    });
+
+    // });
+    </script>
+</body>
+
+</html>
