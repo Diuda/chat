@@ -48,6 +48,16 @@ module.exports = function(app) {
 
     app.get('/chat', function(req, res) {
         res.sendfile(path.join(__dirname, '/public', '/index.html'));
+        // Chat.ChatL.find({}, function(err, data){
+        //     if(err)
+        //         console.log(err);
+        //         // res.send(err);
+                
+        //     else{
+        //         for(var x =0;x<data.length;x++)
+        //         res.send(data);
+        //     }
+        // })
     });
 
 app.get('/log', function(req, res){

@@ -30,19 +30,19 @@
     <div id="left-panel">
         <div id="title">Users</div>
         <div id="userList">
-            <div class="user">Pranav</div>
-            <div class="user">Datta</div>
-            <div class="user">Bhaskar</div>
+            <div><button class="list_user" id="pranav">Pranav</button></div>
+            <div><button class="list_user" id="datta">Datta</button></div>
+            <div><button class="list_user" id="bhaskar">Bhaskar</button></div>
         </div>
     </div>
     <div id="right-panel">
-        <div id="username">
+        <!-- <div id="username">
             <form id="fuser">
                 <input type="text" id="iuser" placeholder="user_id">
                 <input type="text" id="uuser" placeholder="receiver_id">
                 <input type="submit">
             </form>
-        </div>
+        </div> -->
 
 
         <div id="userschat">
@@ -54,12 +54,14 @@
 
             </ul>
         <!-- messages show -->
-            <div id="amess">
+            <div id="container">
+                <div id="amess" >
+                </div>
             </div>
         <!-- message form -->
             <form id="fmess">
                 <input id="imessage" placeholder="message" type="text" />
-                <button>Send</button>
+                <button id="send">Send</button>
             </form>
         </div>    
     </div>
@@ -67,7 +69,6 @@
     <script src="http://localhost:4000/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
-
     var socket = io.connect('http://localhost:4000');
     var fusername = $('#fuser');
     var fmessage = $('#fmess');
@@ -76,26 +77,50 @@
     var chat = $('#mess');
     var username = $('#username');
     var receiver = $('#uuser');
-
-    fusername.submit(function(e) {
-        e.preventDefault();
-        socket.emit('new user', user.val(), receiver.val(), function(data) {
-            // if (data) {
-                username.hide();
+    var sender = "shounak";
+    var receiver = "pranav";
+    var odjDiv = $('#amess');
+    $('.list_user').click(function(){
+        sender = ($(this).prop("id"));
+        //console.log(sender);
+        socket.emit('new user', sender, receiver, function(data) {
+            // // if (data) {
+            //     username.hide();
+                console.log(sender);
+                console.log(receiver);
                 chat.show();
             // } else {
             //     console.log("some error");
             // }
         });
-        user.val('');
+        var x = "<li>" + sender + "</li>";
+        $('#nuser').html(x);
+    });
+    //console.log(sender);
+    //console.log(receiver);
+
+    fusername.submit(function(e) {
+        e.preventDefault();
+        socket.emit('new user', sender, receiver, function(data) {
+            // // if (data) {
+            //     username.hide();
+                //console.log(sender);
+                //console.log(receiver);
+                chat.show();
+            // } else {
+            //     console.log("some error");
+            // }
+        });
+
     });
 
     fmessage.submit(function(e) {
         e.preventDefault();
-        console.log(receiver.val());
+        //console.log(receiver);
         socket.emit('chat message', mess.val());
         mess.val('');
-        return false
+        $('#amess').animate({scrollTop:$('#amess').height()},100);
+        console.log($('#amess').height());
     });
     socket.on('username', function(data, callback) {
         var users = '';
@@ -110,9 +135,20 @@
     socket.on('message', function(data) {
         $('#amess').append("<span class=\"usr\">"
             +data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>");
+        
     });
-
-    // });
+    $(document).ready(function(){
+            socket.emit('new user', sender, receiver, function(data) {
+            // // if (data) {
+            //     username.hide();
+                //console.log(sender);
+                //console.log(receiver);
+                chat.show();
+            // } else {
+            //     console.log("some error");
+            // }
+        });
+    });
     </script>
 </body>
 

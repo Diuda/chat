@@ -56,11 +56,19 @@ a {
 	font-size: 2.5em;
 }
 
-#amess{
+#amess{/* 
+	min-height: 75vh;
+	height: auto;*/
 	height: 75vh;
 	border: none;
 	overflow: scroll;
 }
+/* 
+#container{
+	height: 75vh;
+	border: none;
+	overflow: hidden;
+} */
 
 
 #fmess input{
@@ -92,7 +100,7 @@ a {
 	margin-bottom: 20px;
 }
 
-button{
+#send{
 	background-color: #399cce;
 	font-family: sans-serif;
 	border: none;
@@ -103,7 +111,7 @@ button{
 	font-weight: lighter;
 }
 
-button:hover{
+#send:hover{
 	background-color: #75c6ef;
 	transition: all 0.5s ease;
 	cursor: pointer;
@@ -127,10 +135,23 @@ button:hover{
 	overflow-x: hidden;
 }
 
-.user{
+.list_user{
 	color: white;
 	width: 100%;
 	height: 10%;
 	text-align: center;
 	padding-top: 10px;
+	font-family: 'Lato',sans-serif;
+	font-size: 1.5em;
+	display: block;
+	background:#4D394B;
+	border: none;
+	padding-bottom: 15px;
+	padding-top: 15px; 
+}
+
+.list_user:hover{
+	background: #664963; 
+	cursor: pointer;
+	transition: all 0.5s ease;
 }
