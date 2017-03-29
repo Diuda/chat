@@ -20,6 +20,7 @@
       display: none;
     }
     </style> -->
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
     <link rel="stylesheet" href="./stylesheets/style.css">
 </head>
 
@@ -27,7 +28,12 @@
     
 <!-- enter username -->
     <div id="left-panel">
-        
+        <div id="title">Users</div>
+        <div id="userList">
+            <div class="user">Pranav</div>
+            <div class="user">Datta</div>
+            <div class="user">Bhaskar</div>
+        </div>
     </div>
     <div id="right-panel">
         <div id="username">
@@ -61,6 +67,7 @@
     <script src="http://localhost:4000/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
+
     var socket = io.connect('http://localhost:4000');
     var fusername = $('#fuser');
     var fmessage = $('#fmess');
@@ -101,7 +108,7 @@
 
 
     socket.on('message', function(data) {
-        $('#amess').append("<span class=\"user\">"
+        $('#amess').append("<span class=\"usr\">"
             +data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>");
     });
 
