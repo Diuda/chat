@@ -6,6 +6,7 @@ var app = express();
 server.listen(4000);
 var mongoose = require('mongoose');
 var uuid = require('node-uuid');
+var markdown = require('markdown').markdown;
 
 mongoose.connect('mongodb://localhost:27017/test');
 
@@ -61,7 +62,7 @@ io.on('connection', function(socket) {
             socket.username = user
             socket.join(roomN);
 
-            io.sockets.emit('username', socket.username);
+            // io.sockets.emit('username', socket.username);
 
         });
 
@@ -73,17 +74,18 @@ io.on('connection', function(socket) {
     socket.on('chat message', function(data) {
 
         Chat.Message.find({ room_id: roomName }, function(err, data) {
-            console.log(data);
+            // console.log(data);
             for (var x = 0; x < data.length; x++) {
-                console.log("sender: " + data[x].s_id + " reciever: " + data[x].r_id + " message: " + data[x].message_content + " time: " + data[x].created_date);
+                // console.log("sender: " + data[x].s_id + " reciever: " + data[x].r_id + " message: " + data[x].message_content + " time: " + data[x].created_date);
             }
         });
-        io.in(roomName).emit('message', { msg: data, user: socket.username });
+        io.in(roomName).emit('message', { msg: markdown.toHTML(data).slice(3,-4), user: socket.username });
 
         message.s_id = socket.username;
         message.room_id = roomName;
         message.message_id = uuid.v4();
         message.message_content = data;
+        console.log(sender+" "+rec);
         // FIX THE RECIEVER
         // message.r_id = rec;
 

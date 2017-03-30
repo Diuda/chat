@@ -25,47 +25,67 @@
 </head>
 
 <body>
+    <div class="modal" id="login">
+      <div class="modal-content animate">
+        <div>
+          <span class="close">&times;</span><br>
+          <div id="login-header">
+            Login<br>
+          </div>
+          <div id="login-content">
+            <form onsubmit="return false;">
+              <input id= "user-val" type="text" placeholder="Username" name="login-uname" required>
+              <button type="submit" name="login-submit" id="sub-btn">Let's go!</button>
+            </form>
+          </div>
+          <!-- <div id="login-footer">
+              <span id="footer-link"><a href="">Register here!</a></span>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="modal-back">
     
 <!-- enter username -->
-    <div id="left-panel">
-        <div id="title">Users</div>
-        <div id="userList">
-            <div><button class="list_user" id="pranav">Pranav</button></div>
-            <div><button class="list_user" id="datta">Datta</button></div>
-            <div><button class="list_user" id="bhaskar">Bhaskar</button></div>
+        <div id="left-panel">
+            <div id="title">Users</div>
+            <div id="userList">
+                <div><button class="list_user" id="pranav">Pranav</button></div>
+                <div><button class="list_user" id="datta">Datta</button></div>
+                <div><button class="list_user" id="bhaskar">Bhaskar</button></div>
+                 <div><button class="list_user" id="shounak">Shounak</button></div>
+            </div>
         </div>
-    </div>
-    <div id="right-panel">
-        <!-- <div id="username">
-            <form id="fuser">
-                <input type="text" id="iuser" placeholder="user_id">
-                <input type="text" id="uuser" placeholder="receiver_id">
-                <input type="submit">
-            </form>
-        </div> -->
+        <div id="right-panel">
+            <!-- <div id="username">
+                <form id="fuser">
+                    <input type="text" id="iuser" placeholder="user_id">
+                    <input type="text" id="uuser" placeholder="receiver_id">
+                    <input type="submit">
+                </form>
+            </div> -->
 
 
-        <div id="userschat">
-        </div>
-        
-        <div id="mess">
-        <!-- users connected -->
-            <ul id="nuser">
+            <div id="userschat">
+            </div>
+            
+            <div id="mess">
+            <!-- users connected -->
+                <ul id="nuser">
 
-            </ul>
-        <!-- messages show -->
-            <div id="container">
+                </ul>
+            <!-- messages show -->
                 <div id="amess" >
                 </div>
-            </div>
-        <!-- message form -->
-            <form id="fmess">
-                <input id="imessage" placeholder="message" type="text" />
-                <button id="send">Send</button>
-            </form>
-        </div>    
+            <!-- message form -->
+                <form id="fmess">
+                    <input id="imessage" placeholder="message" type="text" />
+                    <button id="send">Send</button>
+                </form>
+            </div>    
+        </div>
     </div>
-    
+
     <script src="http://localhost:4000/socket.io/socket.io.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script>
@@ -78,22 +98,29 @@
     var username = $('#username');
     var receiver = $('#uuser');
     var sender = "shounak";
-    var receiver = "pranav";
+    var receiver = "receiver";
     var odjDiv = $('#amess');
+    $(".close,#sub-btn").click(function(){
+        sender = $("#user-val").val();
+        console.log(sender);
+        $(".modal").css("display","none");
+    });
+
     $('.list_user').click(function(){
-        sender = ($(this).prop("id"));
+        receiver = ($(this).prop("id"));
+        console.log(receiver);
         //console.log(sender);
         socket.emit('new user', sender, receiver, function(data) {
             // // if (data) {
             //     username.hide();
-                console.log(sender);
-                console.log(receiver);
+                console.log("sender : "+ sender);
+                console.log("receiver : "+ receiver);
                 chat.show();
             // } else {
             //     console.log("some error");
             // }
         });
-        var x = "<li>" + sender + "</li>";
+        var x = "<li>" + receiver + "</li>";
         $('#nuser').html(x);
     });
     //console.log(sender);
@@ -111,7 +138,6 @@
             //     console.log("some error");
             // }
         });
-
     });
 
     fmessage.submit(function(e) {
@@ -120,22 +146,29 @@
         socket.emit('chat message', mess.val());
         mess.val('');
         $('#amess').animate({scrollTop:$('#amess')[0].scrollHeight},100);
-        console.log($('#amess')[0].scrollHeight);
+        //console.log($('#amess')[0].scrollHeight);
     });
-    socket.on('username', function(data, callback) {
-        var users = '';
-        // for (var i = 0; i < data.length; i++) {
-            users += '<li>'+data+ '</li>';
-        // }
-        $('#nuser').append(users);
-        // $('#userchat').append("users");
-    });
+    // socket.on('username', function(data, callback) {
+    //     var users = '';
+    //     // for (var i = 0; i < data.length; i++) {
+    //         users += '<li>'+data+ '</li>';
+    //     // }
+    //     $('#nuser').append(users);
+    //     // $('#userchat').append("users");
+    // });
 
 
     socket.on('message', function(data) {
-        $('#amess').append("<span class=\"usr\">"
-            +data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>");
-        
+        if(data.user == sender)
+        {
+            var x = "<span class=\"usr_s\">"+ sender + "</span> <br/> <span class=\"msg_s\">" + data.msg+"<span><br/><br/>";    
+        }
+        else{
+            var x = "<span class=\"usr\">"+data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>";
+            
+        }
+        $('#amess').append(x);
+        console.log(data);
     });
     $(document).ready(function(){
             socket.emit('new user', sender, receiver, function(data) {
@@ -144,6 +177,7 @@
                 //console.log(sender);
                 //console.log(receiver);
                 chat.show();
+                $('.modal').css("display","block");
             // } else {
             //     console.log("some error");
             // }
