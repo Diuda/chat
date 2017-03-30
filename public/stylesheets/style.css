@@ -3,6 +3,7 @@ body {
 	width: 100%;
 	height: 100vh;
 	margin: 0;
+	overflow: hidden;
 }
 
 a {
@@ -17,7 +18,7 @@ a {
 }
 #right-panel{
 	background-color: white;
-	width: 75%;
+	width: 80%;
 	float: left;
 	height: 100vh;
 }
@@ -54,6 +55,7 @@ a {
 	line-height: 60px;
 	font-family: 'Lato',sans-serif;
 	font-size: 2.5em;
+	text-transform: capitalize;
 }
 
 #amess{/* 
@@ -86,9 +88,10 @@ a {
 	color: black;
 	margin-left: 10px;
 	font-family: 'Lato',sans-serif;
-	font-size: 1.5em;
+	font-size: 1em;
 	font-weight: bold;
-	margin-bottom: 20px;	
+	margin-bottom: 40px;	
+	text-transform: capitalize;
 }
 
 .msg{
@@ -131,7 +134,7 @@ a {
 #userList{
 	width: 100%;
 	height: 85%;
-	overflow: scroll;
+	overflow: hidden;
 	overflow-x: hidden;
 }
 

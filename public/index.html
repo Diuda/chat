@@ -119,8 +119,8 @@
         //console.log(receiver);
         socket.emit('chat message', mess.val());
         mess.val('');
-        $('#amess').animate({scrollTop:$('#amess').height()},100);
-        console.log($('#amess').height());
+        $('#amess').animate({scrollTop:$('#amess')[0].scrollHeight},100);
+        console.log($('#amess')[0].scrollHeight);
     });
     socket.on('username', function(data, callback) {
         var users = '';
