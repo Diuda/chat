@@ -42,6 +42,16 @@ function getRoomName(user, reciever, callback) {
     });
 }
 
+function getMessages(sender,callback){
+    Chat.ChatL.find({s_id: sender}, function(err,messages){
+        if(messages != null)
+        {
+            console.log(messages);
+            return callback(sender,messages);
+        }        
+    });
+}
+
 io.on('connection', function(socket) {
 
 
@@ -65,7 +75,6 @@ io.on('connection', function(socket) {
             // io.sockets.emit('username', socket.username);
 
         });
-
     });
 
 
@@ -87,7 +96,7 @@ io.on('connection', function(socket) {
         message.message_content = data;
         console.log(sender+" "+rec);
         // FIX THE RECIEVER
-        // message.r_id = rec;
+        message.r_id = rec;
 
         message.save(function(err) {
             if (err)
@@ -95,8 +104,6 @@ io.on('connection', function(socket) {
             else
                 console.log("data added");
         });
-
-
 
     });
 

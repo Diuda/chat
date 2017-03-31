@@ -21,6 +21,7 @@
     }
     </style> -->
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet"> 
     <link rel="stylesheet" href="./stylesheets/style.css">
 </head>
 
@@ -161,7 +162,7 @@
     socket.on('message', function(data) {
         if(data.user == sender)
         {
-            var x = "<span class=\"usr_s\">"+ sender + "</span> <br/> <span class=\"msg_s\">" + data.msg+"<span><br/><br/>";    
+            var x = "<span class=\"usr_s\">"+ "&nbsp;" + "</span> <br/> <span class=\"msg_s\">" + data.msg+"<span><br/>";    
         }
         else{
             var x = "<span class=\"usr\">"+data.user + "</span> <br/> <span class=\"msg\">" + data.msg+"<span><br/>";
