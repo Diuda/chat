@@ -58,7 +58,7 @@ io.on('connection', function(socket) {
 
     console.log('User Connected');
 
-    socket.on('new user', function(user, reciever) {
+    socket.on('new user', function(user, reciever, callback) {
         // if(data in usernames){
         //  callback(false)
         // }
@@ -66,15 +66,15 @@ io.on('connection', function(socket) {
         callback(true);
 
 
-        //getRoomName(user, reciever, function(roomN) {
+        getRoomName(user, reciever, function(roomN) {
 
-            console.log("App");
+            console.log(roomN);
             socket.username = user
-            socket.join("App");
+            socket.join(roomN);
 
             // io.sockets.emit('username', socket.username);
 
-        //});
+        });
     });
 
 
